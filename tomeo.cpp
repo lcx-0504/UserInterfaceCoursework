@@ -116,12 +116,27 @@ int main(int argc, char *argv[]) {
     window.setMinimumSize(800, 680);
 
     ControlPanel *panel = new ControlPanel();
-    panel->connect(panel->PauseButton, &QPushButton::clicked, player, &ThePlayer::pause);
-    panel->connect(panel->PlayButton, &QPushButton::clicked, player, &ThePlayer::play);
+
+    panel->PlayButton->hide();
+    // 点击 PauseButton 时，隐藏 PlayButton
+    panel->connect(panel->PauseButton, &QPushButton::clicked, [=]() {
+        player->pause();
+        panel->PauseButton->hide();  // 隐藏 PlayButton
+        panel->PlayButton->show();
+    });
+
+    // 点击 PlayButton 时，隐藏 PauseButton
+    panel->connect(panel->PlayButton, &QPushButton::clicked, [=]() {
+        player->play();
+        panel->PlayButton->hide();  // 隐藏 PauseButton
+
+        panel->PauseButton->show();
+    });
+
     // add the video and the buttons to the top level widget
     top->addWidget(videoWidget);
     top->addWidget(panel);
-//    top->addWidget(buttonWidget);   // 如果不隐藏，buttonWidget会覆盖panel，大概是由于layout的原因
+//    dtop->addWidget(buttonWidget);   // 如果不隐藏，buttonWidget会覆盖panel，大概是由于layout的原因
     // showtime!
     window.show();
 
