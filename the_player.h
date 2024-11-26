@@ -1,7 +1,3 @@
-//
-//
-//
-
 #ifndef CW2_THE_PLAYER_H
 #define CW2_THE_PLAYER_H
 
@@ -35,7 +31,8 @@ public:
 
     // all buttons have been setup, store pointers here
     void setContent(std::vector<TheButton*>* b, std::vector<TheButtonInfo>* i);
-
+    void pause();
+    void play();
 private slots:
 
     // change the image and video for one button every one second

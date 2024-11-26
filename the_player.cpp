@@ -1,7 +1,3 @@
-//
-//
-//
-
 #include "the_player.h"
 
 // all buttons have been setup, store pointers here
@@ -31,4 +27,13 @@ void ThePlayer::playStateChanged (QMediaPlayer::State ms) {
 void ThePlayer::jumpTo (TheButtonInfo* button) {
     setMedia( * button -> url);
     play();
+}
+
+void ThePlayer::pause() {
+    QMediaPlayer::pause(); // 调用基类 QMediaPlayer 的 pause 方法
+}
+
+
+void ThePlayer::play() {
+    QMediaPlayer::play(); // 调用基类 QMediaPlayer 的 pause 方法
 }

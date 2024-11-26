@@ -13,6 +13,7 @@ SOURCES += \
         tomeo.cpp
 
 HEADERS += \
+    control.h \
     the_button.h \
     the_player.h
 
@@ -20,4 +21,10 @@ HEADERS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+FORMS += \
+    control.ui
+
+RESOURCES += \
+    images.qrc
 

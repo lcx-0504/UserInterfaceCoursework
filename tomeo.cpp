@@ -1,13 +1,3 @@
-//
-//    ______
-//   /_  __/___  ____ ___  ___  ____
-//    / / / __ \/ __ `__ \/ _ \/ __ \
-//   / / / /_/ / / / / / /  __/ /_/ /
-//  /_/  \____/_/ /_/ /_/\___/\____/
-//              video for sports enthusiasts...
-//
-//
-
 #include <iostream>
 #include <QApplication>
 #include <QtMultimediaWidgets/QVideoWidget>
@@ -25,7 +15,7 @@
 #include <QtCore/QDirIterator>
 #include "the_player.h"
 #include "the_button.h"
-
+#include "control.h"
 // read in videos and thumbnails to this directory
 std::vector<TheButtonInfo> getInfoIn (std::string loc) {
 
@@ -90,8 +80,9 @@ int main(int argc, char *argv[]) {
     }
 
     // the widget that will show the video
+    // QVideoWidget is a control for displaying videos.
+    // To use it, need to define a QMediaPlayer and set the VideoOutput of the QMediaPlayer to QVideoWidget
     QVideoWidget *videoWidget = new QVideoWidget;
-
     // the QMediaPlayer which controls the playback
     ThePlayer *player = new ThePlayer;
     player->setVideoOutput(videoWidget);
@@ -124,10 +115,13 @@ int main(int argc, char *argv[]) {
     window.setWindowTitle("tomeo");
     window.setMinimumSize(800, 680);
 
+    ControlPanel *panel = new ControlPanel();
+    panel->connect(panel->PauseButton, &QPushButton::clicked, player, &ThePlayer::pause);
+    panel->connect(panel->PlayButton, &QPushButton::clicked, player, &ThePlayer::play);
     // add the video and the buttons to the top level widget
     top->addWidget(videoWidget);
-    top->addWidget(buttonWidget);
-
+    top->addWidget(panel);
+//    top->addWidget(buttonWidget);   // 如果不隐藏，buttonWidget会覆盖panel，大概是由于layout的原因
     // showtime!
     window.show();
 
