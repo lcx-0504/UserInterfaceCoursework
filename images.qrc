@@ -1,8 +1,36 @@
 <RCC>
     <qresource prefix="/new/prefix1"/>
     <qresource prefix="/">
-        <file>images/pauseIcon.jpg</file>
-        <file>images/playIcon.jpg</file>
+        <file>images/autopause.png</file>
+        <file>images/comment.png</file>
+        <file>images/comment_color.png</file>
+        <file>images/comment_fill.png</file>
+        <file>images/comment_fill_color.png</file>
         <file>images/default_thumbnail.png</file>
+        <file>images/favorite.png</file>
+        <file>images/favorite_color.png</file>
+        <file>images/favorite_fill.png</file>
+        <file>images/favorite_fill_color.png</file>
+        <file>images/fullscreen_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png</file>
+        <file>images/fullscreen_exit_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png</file>
+        <file>images/list.png</file>
+        <file>images/list_color.png</file>
+        <file>images/list_fill.png</file>
+        <file>images/list_fill_color.png</file>
+        <file>images/pause.png</file>
+        <file>images/play.png</file>
+        <file>images/repeat.png</file>
+        <file>images/repeat_one.png</file>
+        <file>images/shuffle.png</file>
+        <file>images/speed.png</file>
+        <file>images/speed_fill.png</file>
+        <file>images/star.png</file>
+        <file>images/star_color.png</file>
+        <file>images/star_fill.png</file>
+        <file>images/star_fill_color.png</file>
+        <file>images/volume.png</file>
+        <file>images/volume_off.png</file>
+        <file>images/skip_next.png</file>
+        <file>images/skip_previous.png</file>
     </qresource>
 </RCC>

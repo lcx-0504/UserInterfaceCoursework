@@ -135,7 +135,9 @@ int main(int argc, char *argv[]) {
     leftPanel->addWidget(controlPanel);
 
     // right panel
-    QVBoxLayout *rightPanel = new QVBoxLayout();
+    QWidget *rightPanelWidget = new QWidget(); //layout没有隐藏方法
+    rightPanelWidget->setFixedWidth(300);
+    QVBoxLayout *rightPanel = new QVBoxLayout(rightPanelWidget);
 
     QPushButton *openFolderButton = new QPushButton();
     openFolderButton->setText("Open Folder");
@@ -155,7 +157,21 @@ int main(int argc, char *argv[]) {
     rightPanel->addWidget(listWidget);
 
     top->addLayout(leftPanel);
-    top->addLayout(rightPanel);
+    top->addWidget(rightPanelWidget);
+
+
+    // 显示和隐藏列表
+    controlPanel->PlaylistButton->hide();
+    QObject::connect(controlPanel->PlaylistButton, &QPushButton::clicked, [&]() {
+        rightPanelWidget->show();
+        controlPanel->PlaylistButton->hide();
+        controlPanel->PlaylistOpenButton->show();
+    });
+    QObject::connect(controlPanel->PlaylistOpenButton, &QPushButton::clicked, [&]() {
+        rightPanelWidget->hide();
+        controlPanel->PlaylistButton->show();
+        controlPanel->PlaylistOpenButton->hide();
+    });
 
 
     // 检查启动参数
@@ -192,6 +208,7 @@ int main(int argc, char *argv[]) {
             player->playVideo(videoPath); // 使用新方法直接播放视频
         }
     });
+
 
     // showtime!
     window.show();
