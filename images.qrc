@@ -3,5 +3,6 @@
     <qresource prefix="/">
         <file>images/pauseIcon.jpg</file>
         <file>images/playIcon.jpg</file>
+        <file>images/default_thumbnail.png</file>
     </qresource>
 </RCC>
