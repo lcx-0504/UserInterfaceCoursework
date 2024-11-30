@@ -224,7 +224,7 @@
        </property>
        <property name="icon">
         <iconset resource="images.qrc">
-         <normaloff>:/images/fullscreen_exit_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png</normaloff>:/images/fullscreen_exit_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png</iconset>
+         <normaloff>:/images/fullscreen_exit.png</normaloff>:/images/fullscreen_exit.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -247,7 +247,7 @@
        </property>
        <property name="icon">
         <iconset resource="images.qrc">
-         <normaloff>:/images/fullscreen_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png</normaloff>:/images/fullscreen_24dp_5F6368_FILL0_wght400_GRAD0_opsz24.png</iconset>
+         <normaloff>:/images/fullscreen.png</normaloff>:/images/fullscreen.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -270,7 +270,7 @@
        </property>
        <property name="icon">
         <iconset resource="images.qrc">
-         <normaloff>:/images/list.png</normaloff>:/images/list.png</iconset>
+         <normaloff>:/images/list_panel.png</normaloff>:/images/list_panel.png</iconset>
        </property>
        <property name="iconSize">
         <size>
@@ -293,7 +293,7 @@
        </property>
        <property name="icon">
         <iconset resource="images.qrc">
-         <normaloff>:/images/list_fill_color.png</normaloff>:/images/list_fill_color.png</iconset>
+         <normaloff>:/images/list_panel_fill.png</normaloff>:/images/list_panel_fill.png</iconset>
        </property>
        <property name="iconSize">
         <size>

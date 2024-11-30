@@ -1,5 +1,5 @@
 #include "playlist_item.h"
-#include "ui_play_list_item.h"
+#include "ui_playlist_item.h"
 
 playListItem::playListItem(QWidget *parent) :
     QWidget(parent),
@@ -26,4 +26,16 @@ void playListItem::updateInfo(const QString& title, const QPixmap& thumbnail, co
 
 QString playListItem::getVideoPath() const {
     return videoPath;
+}
+
+QString playListItem::getTitle() const {
+    return videoTitle;
+}
+
+QPixmap playListItem::getThumbnail() const {
+    return videoThumbnail;
+}
+
+QString playListItem::getDuration() const {
+    return videoDuration;
 }

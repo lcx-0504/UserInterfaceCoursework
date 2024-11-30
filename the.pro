@@ -8,12 +8,14 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        listpanel.cpp \
         playlist_item.cpp \
         the_player.cpp \
         tomeo.cpp
 
 HEADERS += \
     control.h \
+    listpanel.h \
     playlist_item.h \
     the_player.h
 
@@ -24,6 +26,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 FORMS += \
     control.ui \
+    listpanel.ui \
     playlist_item.ui
 
 RESOURCES += \
