@@ -8,6 +8,11 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+        control.cpp \
+        customslider.cpp \
+        cvolumebutton.cpp \
+        cvolumeslider.cpp \
+        cvolumewidget.cpp \
         listpanel.cpp \
         playlist_item.cpp \
         the_player.cpp \
@@ -15,6 +20,10 @@ SOURCES += \
 
 HEADERS += \
     control.h \
+    customslider.h \
+    cvolumebutton.h \
+    cvolumeslider.h \
+    cvolumewidget.h \
     listpanel.h \
     playlist_item.h \
     the_player.h

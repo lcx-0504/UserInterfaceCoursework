@@ -5,7 +5,7 @@
 #include <QMediaPlayer>
 #include <vector>
 #include <QTimer>
-
+#include <QMouseEvent>
 class ThePlayer : public QMediaPlayer {
     Q_OBJECT
 
@@ -15,7 +15,7 @@ private:
 
 public:
     ThePlayer() : QMediaPlayer(NULL) {
-        setVolume(0); // 默认音量
+        setVolume(50); // 默认音量
         connect(this, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(playStateChanged(QMediaPlayer::State)));
 
         mTimer = new QTimer(NULL);
@@ -29,10 +29,10 @@ public:
     void pause();
     void play();
 
+
 private slots:
     void shuffle(); // 当前未使用，可移除或保留
     void playStateChanged(QMediaPlayer::State ms);
-
 };
 
 #endif //CW2_THE_PLAYER_H

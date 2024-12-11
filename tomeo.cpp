@@ -22,7 +22,6 @@
 #include "playlist_item.h"
 #include "listpanel.h"
 #include "ui_listpanel.h"
-
 int main(int argc, char *argv[]) {
 
     // let's just check that Qt is operational first
@@ -30,6 +29,7 @@ int main(int argc, char *argv[]) {
 
     // create the Qt Application
     QApplication app(argc, argv);
+
 
     // the widget that will show the video
     // QVideoWidget is a control for displaying videos.
@@ -51,23 +51,7 @@ int main(int argc, char *argv[]) {
     // left Panel
     QVBoxLayout *leftPanel = new QVBoxLayout();
 
-    ControlPanel *controlPanel = new ControlPanel();
-
-    controlPanel->PlayButton->hide();
-    // 点击 PauseButton 时，隐藏 PlayButton
-    controlPanel->connect(controlPanel->PauseButton, &QPushButton::clicked, [=]() {
-        player->pause();
-        controlPanel->PauseButton->hide();  // 隐藏 PlayButton
-        controlPanel->PlayButton->show();
-    });
-
-    // 点击 PlayButton 时，隐藏 PauseButton
-    controlPanel->connect(controlPanel->PlayButton, &QPushButton::clicked, [=]() {
-        player->play();
-        controlPanel->PlayButton->hide();  // 隐藏 PauseButton
-
-        controlPanel->PauseButton->show();
-    });
+    ControlPanel *controlPanel = new ControlPanel(&window, player);
 
     // add the video and the buttons to the top level widget
     leftPanel->addWidget(videoWidget);
