@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>playListItem</class>
- <widget class="QWidget" name="playListItem">
+ <class>PlayListItem</class>
+ <widget class="QWidget" name="PlayListItem">
   <property name="geometry">
    <rect>
     <x>0</x>

@@ -77,16 +77,7 @@ int main(int argc, char *argv[]) {
     // 检查启动参数
     if (argc == 2) {
         QString defaultPath = QString::fromStdString(argv[1]);
-        if (QDir(defaultPath).exists()) {
-            // 加载启动参数路径下的视频
-            listpanel->loadVideos(defaultPath, listpanel->ui->PlaylistListWidget);
-            listpanel->ui->CurrentPathLabel->setText(listpanel->insertZeroWidthSpace(defaultPath)); // 显示当前路径（开启强制换行）
-            listpanel->ui->CurrentPathLabel->setToolTip(defaultPath);
-        } else {
-            // 启动参数路径无效，弹出提示框
-            QMessageBox::warning(&window, "Invalid Path", "The startup folder does not exist. Please select a valid folder.");
-            listpanel->ui->CurrentPathLabel->setText("Invalid startup folder. Choose a folder."); // 提示用户选择路径
-        }
+        listpanel->openFolder(defaultPath); // 调用 ListPanel 的 openFolder
     }
 
     top->addLayout(leftPanel);

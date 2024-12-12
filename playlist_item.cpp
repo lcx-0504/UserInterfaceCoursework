@@ -1,19 +1,19 @@
 #include "playlist_item.h"
 #include "ui_playlist_item.h"
 
-playListItem::playListItem(QWidget *parent) :
+PlayListItem::PlayListItem(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::playListItem)
+    ui(new Ui::PlayListItem)
 {
     ui->setupUi(this);
 }
 
-playListItem::~playListItem()
+PlayListItem::~PlayListItem()
 {
     delete ui;
 }
 
-void playListItem::updateInfo(const QString& title, const QPixmap& thumbnail, const QString& duration, const QString& videoPath) {
+void PlayListItem::updateInfo(const QString& title, const QPixmap& thumbnail, const QString& duration, const QString& videoPath) {
     videoTitle = title;
     videoThumbnail = thumbnail;
     videoDuration = duration;
@@ -24,18 +24,18 @@ void playListItem::updateInfo(const QString& title, const QPixmap& thumbnail, co
     ui->time->setText(videoDuration);
 }
 
-QString playListItem::getVideoPath() const {
+QString PlayListItem::getVideoPath() const {
     return videoPath;
 }
 
-QString playListItem::getTitle() const {
+QString PlayListItem::getTitle() const {
     return videoTitle;
 }
 
-QPixmap playListItem::getThumbnail() const {
+QPixmap PlayListItem::getThumbnail() const {
     return videoThumbnail;
 }
 
-QString playListItem::getDuration() const {
+QString PlayListItem::getDuration() const {
     return videoDuration;
 }

@@ -7,16 +7,16 @@
 #include <QString>
 
 namespace Ui {
-class playListItem;
+class PlayListItem;
 }
 
-class playListItem : public QWidget
+class PlayListItem : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit playListItem(QWidget *parent = nullptr);
-    ~playListItem();
+    explicit PlayListItem(QWidget *parent = nullptr);
+    ~PlayListItem();
 
     // 更新视频信息的方法
     void updateInfo(const QString& title, const QPixmap& thumbnail, const QString& duration, const QString& videoPath);
@@ -28,7 +28,7 @@ public:
     QString getDuration() const;
 
 private:
-    Ui::playListItem *ui;
+    Ui::PlayListItem *ui;
 
     // 视频相关信息
     QString videoTitle;

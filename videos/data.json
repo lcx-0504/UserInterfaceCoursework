@@ -1,0 +1,35 @@
+{
+    "a.wmv": {
+        "collected": true,
+        "comments": [
+            {
+                "content": "hihih",
+                "id": 1,
+                "username": "user1"
+            },
+            {
+                "content": "8555",
+                "id": 2,
+                "username": "66555"
+            }
+        ],
+        "liked": false
+    },
+    "c.wmv": {
+        "collected": false,
+        "comments": [
+            {
+                "content": "content",
+                "id": 3,
+                "username": "user434"
+            }
+        ],
+        "liked": false
+    },
+    "d.wmv": {
+        "collected": true,
+        "comments": [
+        ],
+        "liked": true
+    }
+}

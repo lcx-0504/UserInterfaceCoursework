@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE QtCreatorProject>
-<!-- Written by QtCreator 4.11.1, 2024-12-01T00:10:24. -->
+<!-- Written by QtCreator 4.11.1, 2024-12-12T23:52:51. -->
 <qtcreator>
  <data>
   <variable>EnvironmentId</variable>
@@ -289,7 +289,7 @@
     <valuelist type="QVariantList" key="PE.EnvironmentAspect.Changes"/>
     <value type="QString" key="ProjectExplorer.ProjectConfiguration.Id">Qt4ProjectManager.Qt4RunConfiguration:C:/Users/lcx04/Desktop/User Interface/Coursework/UserInterfaceCoursework/the.pro</value>
     <value type="QString" key="ProjectExplorer.RunConfiguration.BuildKey">C:/Users/lcx04/Desktop/User Interface/Coursework/UserInterfaceCoursework/the.pro</value>
-    <value type="QString" key="RunConfiguration.Arguments">&quot;C:\Users\lcx04\Desktop\User Interface\Coursework\UserInterfaceCoursework\videos&quot;</value>
+    <value type="QString" key="RunConfiguration.Arguments"></value>
     <value type="bool" key="RunConfiguration.Arguments.multi">false</value>
     <value type="QString" key="RunConfiguration.OverrideDebuggerStartup"></value>
     <value type="bool" key="RunConfiguration.UseCppDebugger">false</value>
