@@ -41,7 +41,7 @@ void CommentListItem::setContent(const QString& content) {
 
 void CommentListItem::onEditButtonClicked() {
     // 创建 CommentDialog 对象
-    CommentDialog *dialog = new CommentDialog(this); // 不设置 parent，作为独立窗口
+    CommentDialog *dialog = new CommentDialog(this); // 独立窗口
 
     // 设置为编辑模式并初始化数据
     dialog->setDialogMode(true);
