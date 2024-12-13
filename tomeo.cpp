@@ -44,6 +44,7 @@ int main(int argc, char *argv[]) {
     // create the main window and layout
     QWidget window;
     QHBoxLayout *top = new QHBoxLayout();
+    top->setStretch(1,0);
     window.setLayout(top);
     window.setWindowTitle("tomeo");
     window.setMinimumSize(800, 680);
@@ -72,7 +73,6 @@ int main(int argc, char *argv[]) {
         controlPanel->PlaylistButton->show();
         controlPanel->PlaylistOpenButton->hide();
     });
-
 
     // 检查启动参数
     if (argc == 2) {

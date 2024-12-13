@@ -10,18 +10,12 @@ class ThePlayer : public QMediaPlayer {
     Q_OBJECT
 
 private:
-    QTimer* mTimer;
-    long updateCount = 0;
+    bool isManualStop = false; // 标志是否为用户手动切换视频(只有自动播放到结束才需要触发信号)
 
 public:
     ThePlayer() : QMediaPlayer(NULL) {
         setVolume(50); // 默认音量
-        connect(this, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(playStateChanged(QMediaPlayer::State)));
-
-        mTimer = new QTimer(NULL);
-        mTimer->setInterval(1000); // 每秒调用一次 shuffle
-        mTimer->start();
-        connect(mTimer, SIGNAL(timeout()), SLOT(shuffle()));
+        connect(this, SIGNAL(stateChanged(QMediaPlayer::State)), this, SLOT(onMediaStateChanged(QMediaPlayer::State)));
     }
 
     // 设置视频路径
@@ -29,10 +23,14 @@ public:
     void pause();
     void play();
 
+    void stopManually(); // 设置用户是手动切换了视频
 
 private slots:
-    void shuffle(); // 当前未使用，可移除或保留
-    void playStateChanged(QMediaPlayer::State ms);
+    void onMediaStateChanged(QMediaPlayer::State ms);
+
+signals:
+    void playbackFinished();
+
 };
 
 #endif //CW2_THE_PLAYER_H

@@ -14,16 +14,14 @@ void ThePlayer::play() {
     QMediaPlayer::play(); // 调用基类 QMediaPlayer 的 play 方法
 }
 
-void ThePlayer::shuffle() {
-    // 如果需要随机播放的逻辑，可以实现此方法；目前暂时未使用
+void ThePlayer::stopManually() {
+    isManualStop = true;
+    stop(); // 调用基类的停止方法
 }
 
-void ThePlayer::playStateChanged(QMediaPlayer::State ms) {
-    switch (ms) {
-        case QMediaPlayer::StoppedState:
-            play(); // 视频结束后重新播放
-            break;
-        default:
-            break;
+void ThePlayer::onMediaStateChanged(QMediaPlayer::State state) {
+    if (state == QMediaPlayer::StoppedState && !isManualStop) {
+        emit playbackFinished(); // 仅在非手动停止时发送播放完成信号
     }
+    isManualStop = false; // 重置标志
 }

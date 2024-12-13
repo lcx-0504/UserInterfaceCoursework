@@ -35,17 +35,28 @@ private:
     QString currentVideoPath;    // 当前播放的视频路径
     DataManager *dataManager;    // 管理用户数据
 
+    // 播放视频
+    void playSelectedVideo();
+
     void refreshComments();      // 刷新评论列表
     void updateLikeButton(bool liked);
     void updateCollectButton(bool collected);
     void updateButtonStates(bool enabled);
 
+    // 播放模式
+    enum PlayMode { ListLoop, SingleLoop, RandomLoop, NoLoop };
+    PlayMode currentPlayMode;
+    void onPlayModeButtonClicked();
+    void updatePlayModeUI();
+    void handlePlaybackFinished();
+
 private slots:
     void onNewComment();
-    void onEditComment(int commentId, const QString& newUsername, const QString& newContent);
+    void onEditCommentRequested(int commentId, const QString &username, const QString &content);
     void onDeleteComment(int commentId);
     void onLikeClicked();
     void onCollectClicked();
+
 };
 
 #endif // LISTPANEL_H

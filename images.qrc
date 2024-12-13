@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/">
         <file>images/add_comment.png</file>
-        <file>images/autopause.png</file>
         <file>images/close.png</file>
         <file>images/comment.png</file>
         <file>images/comment_color.png</file>
@@ -42,5 +41,11 @@
         <file>images/volume.png</file>
         <file>images/volume_off.png</file>
         <file>images/playlist_color.png</file>
+        <file>images/no_loop.png</file>
+        <file>images/backward.png</file>
+        <file>images/forward.png</file>
+        <file>images/language.png</file>
+        <file>images/backward5.png</file>
+        <file>images/forward5.png</file>
     </qresource>
 </RCC>

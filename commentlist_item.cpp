@@ -40,31 +40,9 @@ void CommentListItem::setContent(const QString& content) {
 }
 
 void CommentListItem::onEditButtonClicked() {
-    // 创建 CommentDialog 对象
-    CommentDialog *dialog = new CommentDialog(this); // 独立窗口
-
-    // 设置为编辑模式并初始化数据
-    dialog->setDialogMode(true);
-    dialog->setCommentData(getUsername(), getContent());
-
-    // 设置为模态窗口
-    dialog->setWindowModality(Qt::ApplicationModal); // 或 dialog->setModal(true);
-
-    // 弹出对话框并阻塞其他操作
-    if (dialog->exec() == QDialog::Accepted) {
-        QString newUsername = dialog->getUsername();
-        QString newContent = dialog->getCommentContent();
-
-        if (!newUsername.isEmpty() && !newContent.isEmpty()) {
-            emit editRequested(commentId, newUsername, newContent);
-            setUsername(newUsername); // 更新显示的用户名
-            setContent(newContent);   // 更新显示的内容
-        }
-    }
-
-    // 释放资源
-    delete dialog;
+    emit editRequested(commentId, getUsername(), getContent());
 }
+
 
 void CommentListItem::onDeleteButtonClicked() {
     emit deleteRequested(commentId);
