@@ -182,9 +182,12 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
     QObject::connect(ui->PlayModeNoLoopButton, &QPushButton::clicked, this, &ListPanel::onPlayModeButtonClicked);
     // 连接播放器播放结束信号和listpanel的下一步行为
     connect(player, &ThePlayer::playbackFinished, this, &ListPanel::handlePlaybackFinished);
-
+    // 初始化播放模式ui
     updatePlayModeUI();
 
+    // 绑定control中的SkipNext和Prev按钮
+    QObject::connect(controlPanel->SkipPrevButton, &QPushButton::clicked, this, &ListPanel::playPreviousVideo);
+    QObject::connect(controlPanel->SkipNextButton, &QPushButton::clicked, this, &ListPanel::playNextVideo);
 }
 
 void ListPanel::playSelectedVideo() {
@@ -378,6 +381,9 @@ void ListPanel::updatePlayModeUI() {
     ui->PlayModeRandomLoopButton->setVisible(currentPlayMode == PlayMode::RandomLoop);
     ui->PlayModeNoLoopButton->setVisible(currentPlayMode == PlayMode::NoLoop);
 
+    // 随机模式下禁用上一个按钮
+    controlPanel->SkipPrevButton->setDisabled(currentPlayMode == PlayMode::RandomLoop);
+
     // 更新播放模式标签
     switch (currentPlayMode) {
         case PlayMode::ListLoop:
@@ -424,6 +430,36 @@ void ListPanel::handlePlaybackFinished() {
      playSelectedVideo();
 }
 
+void ListPanel::playNextVideo() {
+    int currentIndex = ui->PlaylistListWidget->currentRow();
+    int totalItems = ui->PlaylistListWidget->count();
+
+    if (currentPlayMode == PlayMode::RandomLoop) {
+        int nextIndex = qrand() % totalItems;
+        while (nextIndex == currentIndex) {
+            nextIndex = qrand() % totalItems; // 确保随机到不同的视频
+        }
+        currentIndex = nextIndex;
+    } else {
+        currentIndex = (currentIndex + 1) % totalItems;
+    }
+
+    ui->PlaylistListWidget->setCurrentRow(currentIndex);
+    playSelectedVideo();
+}
+
+void ListPanel::playPreviousVideo() {
+    if (currentPlayMode == PlayMode::RandomLoop) {
+        return; // 随机模式下禁用“上一个”按钮
+    }
+
+    int currentIndex = ui->PlaylistListWidget->currentRow();
+    int totalItems = ui->PlaylistListWidget->count();
+    currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+
+    ui->PlaylistListWidget->setCurrentRow(currentIndex);
+    playSelectedVideo();
+}
 
 ListPanel::~ListPanel() {
     delete ui;

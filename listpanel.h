@@ -57,6 +57,8 @@ private slots:
     void onLikeClicked();
     void onCollectClicked();
 
+    void playNextVideo();     // 播放下一个视频
+    void playPreviousVideo(); // 播放上一个视频
 };
 
 #endif // LISTPANEL_H
