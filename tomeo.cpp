@@ -1,91 +1,14 @@
-#include <iostream>
 #include <QApplication>
-#include <QtMultimediaWidgets/QVideoWidget>
-#include <QMediaPlaylist>
-#include <string>
-#include <vector>
-#include <QtWidgets/QPushButton>
-#include <QtWidgets/QHBoxLayout>
-#include <QtCore/QFileInfo>
-#include <QtWidgets/QFileIconProvider>
-#include <QDesktopServices>
-#include <QImageReader>
-#include <QMessageBox>
-#include <QtCore/QDir>
-#include <QtCore/QDirIterator>
-#include <QLabel>
-#include <QListWidget>
-#include <QFileDialog>
-#include <QTime>
-#include "the_player.h"
-#include "control.h"
-#include "playlist_item.h"
-#include "listpanel.h"
-#include "ui_listpanel.h"
+#include "customwindow.h"
+
 int main(int argc, char *argv[]) {
-
-    // let's just check that Qt is operational first
-    qDebug() << "Qt version: " << QT_VERSION_STR << endl;
-
-    // create the Qt Application
+    // Create the Qt Application
     QApplication app(argc, argv);
 
-
-    // the widget that will show the video
-    // QVideoWidget is a control for displaying videos.
-    // To use it, need to define a QMediaPlayer and set the VideoOutput of the QMediaPlayer to QVideoWidget
-    QVideoWidget *videoWidget = new QVideoWidget;
-    videoWidget->setStyleSheet("background-color: black;");  // 设置黑色背景
-    // the QMediaPlayer which controls the playback
-    ThePlayer *player = new ThePlayer;
-    player->setVideoOutput(videoWidget);
-
-
-    // create the main window and layout
-    QWidget window;
-    QHBoxLayout *top = new QHBoxLayout();
-    top->setStretch(1,0);
-    window.setLayout(top);
-    window.setWindowTitle("tomeo");
-    window.setMinimumSize(800, 680);
-
-    // left Panel
-    QVBoxLayout *leftPanel = new QVBoxLayout();
-
-    ControlPanel *controlPanel = new ControlPanel(&window, player);
-
-    // add the video and the buttons to the top level widget
-    leftPanel->addWidget(videoWidget);
-    leftPanel->addWidget(controlPanel);
-
-    // 右侧的listpanel
-    ListPanel *listpanel = new ListPanel(&window, top, player, controlPanel);
-
-    // 显示和隐藏列表
-    controlPanel->PlaylistButton->hide();
-    QObject::connect(controlPanel->PlaylistButton, &QPushButton::clicked, [&]() {
-        listpanel->show();
-        controlPanel->PlaylistButton->hide();
-        controlPanel->PlaylistOpenButton->show();
-    });
-    QObject::connect(controlPanel->PlaylistOpenButton, &QPushButton::clicked, [&]() {
-        listpanel->hide();
-        controlPanel->PlaylistButton->show();
-        controlPanel->PlaylistOpenButton->hide();
-    });
-
-    // 检查启动参数
-    if (argc == 2) {
-        QString defaultPath = QString::fromStdString(argv[1]);
-        listpanel->openFolder(defaultPath); // 调用 ListPanel 的 openFolder
-    }
-
-    top->addLayout(leftPanel);
-    top->addWidget(listpanel);
-
-    // showtime!
+    // Create and show the custom window
+    CustomWindow window(nullptr, argv, argc);
     window.show();
 
-    // wait for the app to terminate
+    // Execute the application
     return app.exec();
 }

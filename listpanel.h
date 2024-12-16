@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include "the_player.h"
 #include "control.h"
+#include "controlvertical.h"
 #include "datamanager.h"
 #include "commentlist_item.h"
 
@@ -20,7 +21,8 @@ class ListPanel : public QWidget
 
 public:
     Ui::ListPanel *ui;
-    explicit ListPanel(QWidget *parent = nullptr, QHBoxLayout *top = nullptr, ThePlayer *player = nullptr, ControlPanel *controlPanel = nullptr);
+    explicit ListPanel(QWidget *parent = nullptr, QHBoxLayout *top = nullptr, ThePlayer *player = nullptr, ControlPanel *controlPanel = nullptr,
+                        ControlPanelVertical *controlPanelVeritical = nullptr);
     void loadVideos(const QString& folderPath, QListWidget* listWidget);
     QString insertZeroWidthSpace(const QString& text);
     void openFolder(const QString& folderPath);
@@ -31,7 +33,7 @@ private:
     QHBoxLayout *topLayout;
     ThePlayer *player;
     ControlPanel *controlPanel;
-
+    ControlPanelVertical *controlPanelVertical;
     QString currentVideoPath;    // 当前播放的视频路径
     DataManager *dataManager;    // 管理用户数据
 

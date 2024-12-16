@@ -5,6 +5,7 @@ ControlPanel::ControlPanel(QWidget *parent, ThePlayer *playerInstance)
 {
     setupUi(this);
     PlayButton->hide();
+    PlaylistButton->hide();
     // 音量
     VolumeSlider->setMaximum(100);
     VolumeSlider->setMinimum(0);
@@ -44,7 +45,7 @@ void ControlPanel::setupConnections()
     connect(VolumeOffButton, &QPushButton::clicked, this, [=]() {
         int value = VolumeSlider->value();
         player->setVolume(value);
-        VolumeButton->show();
+        VolumeWidget->show();
         VolumeOffButton->hide();
     });
 
@@ -52,7 +53,7 @@ void ControlPanel::setupConnections()
     connect(VolumeButton, &QPushButton::clicked, this, [=]() {
         player->setVolume(0);
         VolumeOffButton->show();
-        VolumeButton->hide();
+        VolumeWidget->hide();
     });
 
     // VolumeSlider滑块

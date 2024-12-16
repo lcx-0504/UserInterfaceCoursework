@@ -102,14 +102,28 @@ void ListPanel::updateButtonStates(bool enabled) {
     ui->CollectButton->setEnabled(enabled);
     ui->CollectOnButton->setEnabled(enabled);
     ui->NewCommentButton->setEnabled(enabled);
+    controlPanel->BackwardButton->setEnabled(enabled);
+    controlPanel->ForwardButton->setEnabled(enabled);
+    controlPanel->PlayButton->setEnabled(enabled);
+    controlPanel->SkipPrevButton->setEnabled(enabled);
+    controlPanel->SkipNextButton->setEnabled(enabled);
+    controlPanel->PauseButton->setEnabled(enabled);
+
+    controlPanelVertical->SkipPrevButton->setEnabled(enabled);
+    controlPanelVertical->SkipNextButton->setEnabled(enabled);
+    controlPanelVertical->FavouriteButton->setEnabled(enabled);
+    controlPanelVertical->FavouriteOnButton->setEnabled(enabled);
+    controlPanelVertical->CollectButton->setEnabled(enabled);
+    controlPanelVertical->CollectOnButton->setEnabled(enabled);
 }
 
-ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, ControlPanel *controlPanel) :
+ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, ControlPanel *controlPanel, ControlPanelVertical *controlPanelVertical) :
     QWidget(parent),
     ui(new Ui::ListPanel),
     topLayout(top),
     player(player),
     controlPanel(controlPanel),
+    controlPanelVertical(controlPanelVertical),
     currentVideoPath(""),
     dataManager(nullptr)
 {
@@ -121,9 +135,7 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
     ui->CommentOnButton->hide();
     ui->CommentWidget->hide();
     ui->PlaylistButton->hide();
-
-    // 初始化按钮为禁用状态
-    updateButtonStates(false);
+    controlPanelVertical->PlaylistButton2->hide();
 
     // 设置Now Playing为空
     PlayListItem* blankListItem = new PlayListItem();
@@ -145,32 +157,70 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
     QObject::connect(ui->FavouriteOnButton, &QPushButton::clicked, this, &ListPanel::onLikeClicked);
     QObject::connect(ui->CollectButton, &QPushButton::clicked, this, &ListPanel::onCollectClicked);
     QObject::connect(ui->CollectOnButton, &QPushButton::clicked, this, &ListPanel::onCollectClicked);
+    QObject::connect(controlPanelVertical->FavouriteButton, &QPushButton::clicked, this, &ListPanel::onLikeClicked);
+    QObject::connect(controlPanelVertical->FavouriteOnButton, &QPushButton::clicked, this, &ListPanel::onLikeClicked);
+    QObject::connect(controlPanelVertical->CollectButton, &QPushButton::clicked, this, &ListPanel::onCollectClicked);
+    QObject::connect(controlPanelVertical->CollectOnButton, &QPushButton::clicked, this, &ListPanel::onCollectClicked);
 
     // 新增评论
     QObject::connect(ui->NewCommentButton, &QPushButton::clicked, this, &ListPanel::onNewComment);
 
     // 切换列表
-    QObject::connect(ui->CommentButton, &QPushButton::clicked, [&]() {
+    QObject::connect(ui->CommentButton, &QPushButton::clicked, [=]() {
         ui->CommentButton->hide();
+        controlPanelVertical->CommentButton->hide();
         ui->CommentOnButton->show();
+        controlPanelVertical->CommentOnButton->show();
         ui->PlaylistButton->show();
+        controlPanelVertical->PlaylistButton2->show();
         ui->PlaylistOnButton->hide();
+        controlPanelVertical->PlaylistOnButton->hide();
         ui->CommentWidget->show();
         ui->PlaylistWidget->hide();
     });
-    QObject::connect(ui->PlaylistButton, &QPushButton::clicked, [&]() {
+    QObject::connect(controlPanelVertical->CommentButton, &QPushButton::clicked, [=]() {
+        ui->CommentButton->hide();
+        controlPanelVertical->CommentButton->hide();
+        ui->CommentOnButton->show();
+        controlPanelVertical->CommentOnButton->show();
+        ui->PlaylistButton->show();
+        controlPanelVertical->PlaylistButton2->show();
+        ui->PlaylistOnButton->hide();
+        controlPanelVertical->PlaylistOnButton->hide();
+        ui->CommentWidget->show();
+        ui->PlaylistWidget->hide();
+    });
+    QObject::connect(ui->PlaylistButton, &QPushButton::clicked, [=]() {
         ui->CommentButton->show();
+        controlPanelVertical->CommentButton->show();
         ui->CommentOnButton->hide();
+        controlPanelVertical->CommentOnButton->hide();
         ui->PlaylistButton->hide();
+        controlPanelVertical->PlaylistButton2->hide();
         ui->PlaylistOnButton->show();
+        controlPanelVertical->PlaylistOnButton->show();
+        ui->CommentWidget->hide();
+        ui->PlaylistWidget->show();
+    });
+    QObject::connect(controlPanelVertical->PlaylistButton2, &QPushButton::clicked, [=]() {
+        ui->CommentButton->show();
+        controlPanelVertical->CommentButton->show();
+        ui->CommentOnButton->hide();
+        controlPanelVertical->CommentOnButton->hide();
+        ui->PlaylistButton->hide();
+        controlPanelVertical->PlaylistButton2->hide();
+        ui->PlaylistOnButton->show();
+        controlPanelVertical->PlaylistOnButton->show();
         ui->CommentWidget->hide();
         ui->PlaylistWidget->show();
     });
 
     // 关闭listPanel
-    QObject::connect(ui->CloseButton, &QPushButton::clicked, [&]() {
-        controlPanel->PlaylistButton->show();
+    QObject::connect(ui->CloseButton, &QPushButton::clicked, [=]() {
         controlPanel->PlaylistOpenButton->hide();
+        controlPanel->PlaylistButton->show();
+        controlPanelVertical->PlaylistOpenButton->hide();
+        controlPanelVertical->PlaylistButton->show();
         this->hide();
     });
 
@@ -188,6 +238,13 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
     // 绑定control中的SkipNext和Prev按钮
     QObject::connect(controlPanel->SkipPrevButton, &QPushButton::clicked, this, &ListPanel::playPreviousVideo);
     QObject::connect(controlPanel->SkipNextButton, &QPushButton::clicked, this, &ListPanel::playNextVideo);
+    // 绑定controlveitical中的SkipNext和Prev按钮
+    QObject::connect(controlPanelVertical->SkipPrevButton, &QPushButton::clicked, this, &ListPanel::playPreviousVideo);
+    QObject::connect(controlPanelVertical->SkipNextButton, &QPushButton::clicked, this, &ListPanel::playNextVideo);
+
+
+    // 初始化按钮为禁用状态
+    updateButtonStates(false);
 }
 
 void ListPanel::playSelectedVideo() {
@@ -339,6 +396,8 @@ void ListPanel::onLikeClicked() {
 void ListPanel::updateLikeButton(bool liked) {
     ui->FavouriteButton->setVisible(!liked);
     ui->FavouriteOnButton->setVisible(liked);
+    controlPanelVertical->FavouriteButton->setVisible(!liked);
+    controlPanelVertical->FavouriteOnButton->setVisible(liked);
 }
 
 void ListPanel::onCollectClicked() {
@@ -350,6 +409,8 @@ void ListPanel::onCollectClicked() {
 void ListPanel::updateCollectButton(bool collected) {
     ui->CollectButton->setVisible(!collected);
     ui->CollectOnButton->setVisible(collected);
+    controlPanelVertical->CollectButton->setVisible(!collected);
+    controlPanelVertical->CollectOnButton->setVisible(collected);
 }
 
 // 播放模式相关
@@ -383,6 +444,7 @@ void ListPanel::updatePlayModeUI() {
 
     // 随机模式下禁用上一个按钮
     controlPanel->SkipPrevButton->setDisabled(currentPlayMode == PlayMode::RandomLoop);
+    controlPanelVertical->SkipPrevButton->setDisabled(currentPlayMode == PlayMode::RandomLoop);
 
     // 更新播放模式标签
     switch (currentPlayMode) {

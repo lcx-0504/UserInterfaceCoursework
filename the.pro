@@ -11,7 +11,9 @@ SOURCES += \
         commentdialog.cpp \
         commentlist_item.cpp \
         control.cpp \
+        controlvertical.cpp \
         customslider.cpp \
+        customwindow.cpp \
         cvolumebutton.cpp \
         cvolumeslider.cpp \
         cvolumewidget.cpp \
@@ -25,7 +27,9 @@ HEADERS += \
     commentdialog.h \
     commentlist_item.h \
     control.h \
+    controlvertical.h \
     customslider.h \
+    customwindow.h \
     cvolumebutton.h \
     cvolumeslider.h \
     cvolumewidget.h \
@@ -43,6 +47,7 @@ FORMS += \
     commentdialog.ui \
     commentlist_item.ui \
     control.ui \
+    controlvertical.ui \
     listpanel.ui \
     playlist_item.ui
 
