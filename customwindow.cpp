@@ -3,7 +3,7 @@
 #include <QPushButton>
 #include "the_videowidget.h"
 #include "ui_listpanel.h"
-int screen_mode = 0;
+int screen_mode = 1;
 int lang_mode = 0;
 CustomWindow::CustomWindow(QWidget *parent, char *argv[], int argc)
     : QWidget(parent) {
@@ -31,8 +31,8 @@ void CustomWindow::setupUI() {
     top->setSpacing(12);
 
     setWindowTitle("tomeo");
-    setMinimumSize(400, 680);
-    this->resize(QSize(500, 680));
+    setMinimumSize(500, 680);
+    this->resize(QSize(1200, 680));
     // Left Panel
     leftPanel = new QVBoxLayout();
     updown = new QStackedLayout();
@@ -45,6 +45,7 @@ void CustomWindow::setupUI() {
 
     // Right List Panel
     listpanel = new ListPanel(this, top, player, controlPanel, controlPanelVertical);
+
     // set_control
     connect(player, &ThePlayer::change_state, controlPanel, &ControlPanel::handleSignal);
     connect(controlPanel->VolumeSlider, &QSlider::valueChanged, controlPanelVertical->VolumeSlider, &QSlider::setValue);
@@ -183,7 +184,8 @@ void CustomWindow::resizeEvent(QResizeEvent *event) {
         // Check if the width is larger than 900
         if (width > 900) {
             if(screen_mode == 1){
-                listpanel->setMaximumWidth(300);
+                listpanel->setMaximumWidth(400);
+                listpanel->setMinimumWidth(400);
                 screen_mode = 0;
                 listpanel->ui->CloseButton->show();
                 // Larger than 900, show controlPanel, hide controlPanelVertical, show listPanel

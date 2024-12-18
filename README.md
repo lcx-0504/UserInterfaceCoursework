@@ -1,10 +1,10 @@
-# **Tomeo Video Player Prototype - README**
+# **MVP Video Player Prototype - README**
 
 ---
 
 ## **Project Overview**
 
-**Tomeo** is a video player prototype developed using **Qt 5.14**, designed to deliver an efficient, convenient, and feature-rich video playback experience. By implementing core playback controls, user interaction features (like favorites, likes, and comments), multi-language support, and responsive design, the player offers an intelligent and user-friendly video viewing experience. The project follows **Agile Development Methodology**, continuously refining functionality and user interface through iterative development.
+**MVP** is a video player prototype developed using **Qt**, designed to deliver an efficient, convenient, and feature-rich video playback experience. By implementing core playback controls, user interaction features (like favorites, likes, and comments), multi-language support, and responsive design, the player offers an intelligent and user-friendly video viewing experience. The project follows **Agile Development Methodology**, continuously refining functionality and user interface through iterative development.
 
 ---
 
@@ -97,7 +97,7 @@ Users can switch playback modes easily using the mode selection button, and the 
 
 ### **System Requirements**  
 - **Operating System**: Windows, MacOS, or Linux  
-- **Qt Version**: Qt 5.14  
+- **Qt Version**: Qt 5.15.2  
 - **Compiler**: C++17 or higher  
 
 ### **Installation Steps**  
@@ -135,8 +135,8 @@ Users can switch playback modes easily using the mode selection button, and the 
 
 We welcome all suggestions and contributions!  
 - **GitHub Issues**: [Submit issues and suggestions](https://github.com/lcx-0504/UserInterfaceCoursework/issues)  
-- **Contact Email**: `support@tomeo.com`  
+- **Contact Email**: `sc222cl@leeds.ac.uk`  
 
 ---
 
-**Tomeo**: Making video playback smarter, more efficient, and more enjoyable!  
+**MVP**: Making video playback smarter, more efficient, and more enjoyable!  
