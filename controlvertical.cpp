@@ -8,7 +8,7 @@ ControlPanelVertical::ControlPanelVertical(QWidget *parent, ThePlayer *playerIns
     FavouriteOnButton->hide();
     CollectOnButton->hide();
     CommentOnButton->hide();
-    // 音量
+    // volume
     VolumeSlider->setMaximum(100);
     VolumeSlider->setMinimum(0);
     VolumeSlider->setValue(50);
@@ -17,7 +17,7 @@ ControlPanelVertical::ControlPanelVertical(QWidget *parent, ThePlayer *playerIns
     VolumeButton->setVolumeSlider(VolumeSlider);
     VolumeWidget->setVolumeSlider(VolumeSlider);
 
-    // 信号槽
+    // Signal slot
     setupConnections();
 }
 
@@ -36,14 +36,14 @@ void ControlPanelVertical::setupConnections()
         VolumeOffButton->hide();
     });
 
-    // VolumeButton键
+    // VolumeButton
     connect(VolumeButton, &QPushButton::clicked, this, [=]() {
         player->setVolume(0);
         VolumeOffButton->show();
         VolumeButton->hide();
     });
 
-    // VolumeSlider滑块
+    // VolumeSlider
     connect(VolumeSlider, &QSlider::valueChanged, this, [=](int value) {
         player->setVolume(value);
     });

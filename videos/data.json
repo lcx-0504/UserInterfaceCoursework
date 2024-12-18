@@ -23,7 +23,7 @@
                 "username": "888"
             }
         ],
-        "liked": false
+        "liked": true
     },
     "b.wmv": {
         "collected": true,
@@ -37,6 +37,11 @@
                 "content": "666777",
                 "id": 5,
                 "username": "888"
+            },
+            {
+                "content": "234324324",
+                "id": 11,
+                "username": "234234"
             }
         ],
         "liked": true
@@ -71,9 +76,14 @@
                 "username": "You"
             }
         ],
+        "liked": false
+    },
+    "e.wmv": {
+        "collected": true,
         "liked": true
     },
     "g.wmv": {
+        "collected": false,
         "liked": true
     }
 }

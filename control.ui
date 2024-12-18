@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>754</width>
-    <height>106</height>
+    <height>78</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -21,7 +21,19 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
+    <number>2</number>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
     <number>6</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
    </property>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -54,7 +66,12 @@
       </widget>
      </item>
      <item>
-      <widget class="QLabel" name="TimeLable">
+      <widget class="QLabel" name="TimeLabel">
+       <property name="font">
+        <font>
+         <family>Arial</family>
+        </font>
+       </property>
        <property name="text">
         <string>TextLabel</string>
        </property>
@@ -311,7 +328,7 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
          </spacer>
@@ -327,7 +344,7 @@
        <property name="sizeHint" stdset="0">
         <size>
          <width>0</width>
-         <height>20</height>
+         <height>0</height>
         </size>
        </property>
       </spacer>

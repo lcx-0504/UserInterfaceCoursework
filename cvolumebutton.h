@@ -11,7 +11,7 @@ public:
     explicit CVolumeButton(QWidget *parent = nullptr);
     void setVolumeSlider(QSlider* slider) { VolumeSlider = slider; }
 protected:
-    void enterEvent(QEvent* event) override;  // 覆盖 QEvent 类型的 enterEvent
+    void enterEvent(QEvent* event) override;  // Overrides enterEvent of type QEvent
     void leaveEvent(QEvent* event) override;
 
 private:

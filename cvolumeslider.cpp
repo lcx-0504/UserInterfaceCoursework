@@ -5,7 +5,7 @@
 CVolumeSlider::CVolumeSlider(QWidget *parent)
     : QSlider(parent)
 {
-    // 在构造函数中初始化按钮样式，设置默认值等
+    // Initialize button styles in constructors, set default values, and more
 }
 
 void CVolumeSlider::enterEvent(QEvent* event) {

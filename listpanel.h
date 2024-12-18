@@ -34,13 +34,13 @@ private:
     ThePlayer *player;
     ControlPanel *controlPanel;
     ControlPanelVertical *controlPanelVertical;
-    QString currentVideoPath;    // 当前播放的视频路径
-    DataManager *dataManager;    // 管理用户数据
+    QString currentVideoPath;    // Path of the currently playing video
+    DataManager *dataManager;    // Managing User data
 
-    // 播放视频
+    // play video
     void playSelectedVideo();
 
-    void refreshComments();      // 刷新评论列表
+    void refreshComments();      // Refresh the comment list
     void updateLikeButton(bool liked);
     void updateCollectButton(bool collected);
     void updateButtonStates(bool enabled);
@@ -59,8 +59,8 @@ private slots:
     void onLikeClicked();
     void onCollectClicked();
 
-    void playNextVideo();     // 播放下一个视频
-    void playPreviousVideo(); // 播放上一个视频
+    void playNextVideo();     // Play the next video
+    void playPreviousVideo(); // Play the previous video
 };
 
 #endif // LISTPANEL_H

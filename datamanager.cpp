@@ -18,7 +18,7 @@ void DataManager::load() {
         videoData = doc.object();
         file.close();
     } else {
-        videoData = QJsonObject(); // 初始化为空
+        videoData = QJsonObject(); // Initialize null
     }
     initializeUsedCommentIds();
 }
@@ -30,7 +30,7 @@ void DataManager::save() {
 bool DataManager::getLikeStatus(const QString& videoPath) const {
     QString relativePath = toRelativePath(videoPath);
     if (!videoData.contains(relativePath)) {
-        return false; // 默认未点赞
+        return false; //No like is clicked by default
     }
     return videoData[relativePath].toObject().value("liked").toBool(false);
 }

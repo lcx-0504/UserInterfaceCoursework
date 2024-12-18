@@ -5,14 +5,14 @@
 CommentDialog::CommentDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::CommentDialog),
-    editMode(false) // 默认新建模式
+    editMode(false) // Default new mode
 {
     ui->setupUi(this);
 
-    // 设置窗口标志，移除标题栏中的问号按钮
+    // Set the window flag and remove the question mark button from the title bar
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    // 绑定按钮事件
+    // Bind button event
     connect(ui->OKButton, &QPushButton::clicked, this, &CommentDialog::onOKButtonClicked);
     connect(ui->CancelButton, &QPushButton::clicked, this, &CommentDialog::onCancelButtonClicked);
 }
@@ -24,7 +24,7 @@ CommentDialog::~CommentDialog()
 
 void CommentDialog::setDialogMode(bool isEditMode) {
     editMode = isEditMode;
-    ui->Title->setText(isEditMode ? "Edit Comment" : "New Comment"); // 动态设置标题
+    ui->Title->setText(isEditMode ? QObject::tr("Edit Comment") : QObject::tr("New Comment")); // Dynamically set title
 }
 
 void CommentDialog::setCommentData(const QString& username, const QString& content) {
@@ -45,7 +45,7 @@ void CommentDialog::onOKButtonClicked() {
     QString content = getCommentContent();
 
     if (username.isEmpty() || content.isEmpty()) {
-        QMessageBox::warning(this, "Invalid Input", "Username and content cannot be empty.");
+        QMessageBox::warning(this, QObject::tr("Invalid Input"), QObject::tr("Username and content cannot be empty."));
         return;
     }
 

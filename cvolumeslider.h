@@ -9,7 +9,7 @@ class CVolumeSlider : public QSlider
 public:
     explicit CVolumeSlider(QWidget *parent = nullptr);
 protected:
-    void enterEvent(QEvent* event) override;  // 覆盖 QEvent 类型的 enterEvent
+    void enterEvent(QEvent* event) override;
     void leaveEvent(QEvent* event) override;
 };
 

@@ -15,14 +15,14 @@ public:
     explicit CommentDialog(QWidget *parent = nullptr);
     ~CommentDialog();
 
-    void setDialogMode(bool isEditMode); // 设置对话框模式，true 为编辑模式，false 为新建模式
-    void setCommentData(const QString& username, const QString& content); // 设置初始评论数据（用于编辑模式）
+    void setDialogMode(bool isEditMode); // Set dialog mode, true to edit mode, false to create mode
+    void setCommentData(const QString& username, const QString& content); // Set initial comment data (for edit mode)
 
-    QString getUsername() const;       // 获取输入的用户名
-    QString getCommentContent() const; // 获取输入的评论内容
+    QString getUsername() const;       // Gets the entered user name
+    QString getCommentContent() const; // Get the input comment content
 
 signals:
-    void dialogAccepted(const QString& username, const QString& content); // 确定时的信号
+    void dialogAccepted(const QString& username, const QString& content); // The signal of confirmation
 
 private slots:
     void onOKButtonClicked();
@@ -30,7 +30,7 @@ private slots:
 
 private:
     Ui::CommentDialog *ui;
-    bool editMode; // 当前是否为编辑模式
+    bool editMode; // Whether the current mode is editing
 };
 
 #endif // COMMENTDIALOG_H

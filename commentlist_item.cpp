@@ -9,7 +9,7 @@ CommentListItem::CommentListItem(int commentId, const QString& username, const Q
     setUsername(username);
     setContent(content);
 
-    // 绑定按钮事件
+    // Bind button event
     connect(ui->EditButton, &QPushButton::clicked, this, &CommentListItem::onEditButtonClicked);
     connect(ui->DeleteButton, &QPushButton::clicked, this, &CommentListItem::onDeleteButtonClicked);
 }

@@ -2,7 +2,8 @@ QT += core gui widgets multimedia multimediawidgets
 
 CONFIG += c++11
 
-
+TRANSLATIONS += translations/zh.ts\
+                translations/en.ts
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
@@ -36,7 +37,8 @@ HEADERS += \
     datamanager.h \
     listpanel.h \
     playlist_item.h \
-    the_player.h
+    the_player.h \
+    the_videowidget.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -52,5 +54,6 @@ FORMS += \
     playlist_item.ui
 
 RESOURCES += \
-    images.qrc
+    images.qrc \
+    translations.qrc
 

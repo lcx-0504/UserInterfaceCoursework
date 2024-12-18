@@ -6,7 +6,7 @@ ControlPanel::ControlPanel(QWidget *parent, ThePlayer *playerInstance)
     setupUi(this);
     PlayButton->hide();
     PlaylistButton->hide();
-    // 音量
+    // volume
     VolumeSlider->setMaximum(100);
     VolumeSlider->setMinimum(0);
     VolumeSlider->setValue(50);
@@ -14,10 +14,11 @@ ControlPanel::ControlPanel(QWidget *parent, ThePlayer *playerInstance)
     VolumeOffButton->hide();
     VolumeButton->setVolumeSlider(VolumeSlider);
     VolumeWidget->setVolumeSlider(VolumeSlider);
-    // 一开始不显示TimeLable
-    TimeLable->setText("");
-    // 信号槽
+    // The TimeLable is not displayed initially
+    TimeLabel->setText("");
+    // Signal slot
     setupConnections();
+    FullscreenExitButton->hide();
 }
 
 
@@ -25,23 +26,31 @@ void ControlPanel::setPlayer(ThePlayer *playerInstance)
 {
     player = playerInstance;
 }
-
+void ControlPanel::handleSignal(int value){
+    if(value == 2){
+        if(!this->ForwardButton->isHidden()){
+            PauseButton->show();
+            PlayButton->hide();
+        }
+    }else if(value == 1){
+        if(!this->ForwardButton->isHidden()){
+            PauseButton->hide();
+            PlayButton->show();
+        }
+    }
+}
 void ControlPanel::setupConnections()
 {
-    // 点击 PauseButton 时，隐藏 PlayButton
+    // When you click PauseButton, hide the PlayButton
     connect(PauseButton, &QPushButton::clicked, this, [=]() {
         player->pause();
-        PauseButton->hide();
-        PlayButton->show();
     });
 
-    // 点击 PlayButton 时，隐藏 PauseButton
+    // When you click PlayButton, hide the PauseButton
     connect(PlayButton, &QPushButton::clicked, this, [=]() {
         player->play();
-        PlayButton->hide();
-        PauseButton->show();
     });
-    // VolumeOffButton键
+    // VolumeOffButton
     connect(VolumeOffButton, &QPushButton::clicked, this, [=]() {
         int value = VolumeSlider->value();
         player->setVolume(value);
@@ -49,69 +58,69 @@ void ControlPanel::setupConnections()
         VolumeOffButton->hide();
     });
 
-    // VolumeButton键
+    // VolumeButton
     connect(VolumeButton, &QPushButton::clicked, this, [=]() {
         player->setVolume(0);
         VolumeOffButton->show();
         VolumeWidget->hide();
     });
 
-    // VolumeSlider滑块
+    // VolumeSlider
     connect(VolumeSlider, &QSlider::valueChanged, this, [=](int value) {
         player->setVolume(value);
     });
 
-    //视频长度改变
+    // Video length change
     connect(player,SIGNAL(durationChanged(qint64)),this,SLOT(onPlayerDurationChanged(qint64)));
-    //进度条位置改变
+    // The position of the progress bar changes
     connect(player,SIGNAL(positionChanged(qint64)),this,SLOT(onPlayerPositionChanged(qint64)));
-    //拖动进度条，改变视频的进度
+    // Drag the progress bar to change the progress of the video
     connect(ProgressBar,SIGNAL(sliderMoved(int)),this,SLOT(onSliderMoved(int)));
-    // 点击进度条，视频直接移到那个位置
+    // Click on the progress bar and the video moves directly to that location
     connect(ProgressBar,SIGNAL(costomSliderClicked()),this,SLOT(sliderClicked()));
 
-    // 点击 ForwardButton 快进 5 秒
+    // Click ForwardButton to fast forward 5 seconds
    connect(ForwardButton, &QPushButton::clicked, this, [=]() {
        qint64 currentPosition = player->position();
-       player->setPosition(currentPosition + 5000);  // 快进5秒
+       player->setPosition(currentPosition + 5000);  //Fast forward five seconds
    });
 
-   // 点击 BackwardButton 快退 5 秒
+   // Click the BackwardButton to rewind for 5 seconds
    connect(BackwardButton, &QPushButton::clicked, this, [=]() {
        qint64 currentPosition = player->position();
-       player->setPosition(currentPosition - 5000);  // 快退5秒
+       player->setPosition(currentPosition - 5000);  // Get back five seconds
    });
 }
 
-// 设置进度条最大值为视频总长度
+// Set the maximum progress bar to the total video length
 void ControlPanel::onPlayerDurationChanged(qint64 duration){
 //    qDebug()<<duration;
     ProgressBar->setMaximum(duration);
 }
 
-// 获取视频进度
+// Get video progress
 void ControlPanel::onPlayerPositionChanged(qint64 position){
 //    qDebug()<<position;
     ProgressBar->setValue(position);
     updateTimeLabel(position);
 }
 
-// 根据进度条的value，改变视频的进度
+// Change the progress of the video according to the value of the progress bar
 void ControlPanel::onSliderMoved(int value){
     player->setPosition(value);
 }
 
-// slider点击事件发生后，改变视频的进度
+// After the slider click event occurs, change the progress of the video
 void ControlPanel::sliderClicked(){
     player->setPosition(ProgressBar->value());
 }
 
-// 调用formatTime函数更新时间
+// Call the formatTime function to update the time
 void ControlPanel::updateTimeLabel(qint64 position) {
     qint64 duration = player->duration();
     QString currentTime = formatTime(position);
     QString totalTime = formatTime(duration);
-    TimeLable->setText(currentTime + " / " + totalTime);
+    TimeLabel->setText(currentTime + " / " + totalTime);
 }
 
 // 格式化时间为"MM:SS / MM:SS"
@@ -119,5 +128,5 @@ QString ControlPanel::formatTime(qint64 timeInMilliseconds) {
     int totalSeconds = timeInMilliseconds / 1000;
     int minutes = totalSeconds / 60;
     int seconds = totalSeconds % 60;
-    return QString::asprintf("%02d:%02d", minutes, seconds);
+    return QString::asprintf(" %02d:%02d ", minutes, seconds);
 }

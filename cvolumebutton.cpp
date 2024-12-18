@@ -5,7 +5,7 @@
 CVolumeButton::CVolumeButton(QWidget *parent)
     : QPushButton(parent)
 {
-    // 在构造函数中初始化按钮样式，设置默认值等
+    // Initialize button styles in constructors, set default values, and more
 }
 
 void CVolumeButton::enterEvent(QEvent* event) {
@@ -13,16 +13,16 @@ void CVolumeButton::enterEvent(QEvent* event) {
     enterPos = QCursor::pos();
 
 }
-// 鼠标离开VolumeButton后，如果鼠标还在VolumeWidget内显示VolumeSlider，否则隐藏VolumeSlider
+// After the mouse leaves the VolumeButton, if the mouse still displays VolumeSlider inside the VolumeWidget, hide VolumeSlider otherwise
 void CVolumeButton::leaveEvent(QEvent* event) {
-    // 获取鼠标的全局坐标
+    // Gets the global coordinates of the mouse
     QPoint leavePos = QCursor::pos();
-    // 判断鼠标有没有超出volumeWidget
+    // Determine if the mouse has exceeded volumeWidget
     QWidget* volumeWidget = parentWidget();
     if (volumeWidget) {
-        // 将鼠标的全局坐标转换为相对于VolumeWidget的坐标
+        // Converts the global coordinates of the mouse to those relative to VolumeWidget
         QPoint localPos = volumeWidget->mapFromGlobal(leavePos);
-        // 获取了VolumeWidget相对于VolumeWidget的坐标
+        // Gets the coordinates of VolumeWidget with respect to VolumeWidget
         QRect volumeWidgetRect(0, 0, volumeWidget->width(), volumeWidget->height());
         // qDebug()<<volumeWidgetRect.x();
         if (volumeWidgetRect.contains(localPos)) {

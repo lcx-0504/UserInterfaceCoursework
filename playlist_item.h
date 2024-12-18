@@ -18,10 +18,10 @@ public:
     explicit PlayListItem(QWidget *parent = nullptr);
     ~PlayListItem();
 
-    // 更新视频信息的方法
+    // Methods for updating video information
     void updateInfo(const QString& title, const QPixmap& thumbnail, const QString& duration, const QString& videoPath);
 
-    // Get方法
+    // Get method
     QString getVideoPath() const;
     QString getTitle() const;
     QPixmap getThumbnail() const;
@@ -30,11 +30,11 @@ public:
 private:
     Ui::PlayListItem *ui;
 
-    // 视频相关信息
+    // Video related information
     QString videoTitle;
     QPixmap videoThumbnail;
     QString videoDuration;
-    QString videoPath; // 存储视频文件路径
+    QString videoPath; // Path for storing video files
 };
 
 #endif // PLAY_LIST_ITEM_H

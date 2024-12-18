@@ -21,25 +21,25 @@ void ListPanel::loadVideos(const QString& folderPath, QListWidget* listWidget) {
     dir.setNameFilters(filters);
     dir.setFilter(QDir::Files);
 
-    listWidget->clear(); // 清空列表
+    listWidget->clear(); // Clear list
 
     for (const QString& fileName : dir.entryList()) {
         QString filePath = dir.absoluteFilePath(fileName);
 
-        // 设置标题和默认时长
-        QString title = QFileInfo(fileName).fileName(); // 使用文件名作为标题
+        // Set the title and default duration
+        QString title = QFileInfo(fileName).fileName(); // Use the file name as the title
 
-        // 加载缩略图
+        // Load thumbnail
         QString thumbPath = filePath.left(filePath.lastIndexOf('.')) + ".png";
         QPixmap thumbnail;
         if (QFile::exists(thumbPath)) {
             thumbnail.load(thumbPath);
         } else {
-            thumbnail = QPixmap(":/images/default_thumbnail.png"); // 使用默认缩略图
+            thumbnail = QPixmap(":/images/default_thumbnail.png"); // Use the default thumbnail
         }
 
-        // 加载视频时长
-        QString duration = "--:--"; // 默认时长
+        // Loading video duration
+        QString duration = "--:--"; // Default duration
         QMediaPlayer mediaPlayer;
         mediaPlayer.setMedia(QUrl::fromLocalFile(filePath));
         QEventLoop loop;
@@ -48,54 +48,55 @@ void ListPanel::loadVideos(const QString& folderPath, QListWidget* listWidget) {
             loop.quit();
         });
 
-        // 等待元数据加载完成
+        // Wait for the metadata to load
         mediaPlayer.play();
         loop.exec();
 
-        // 创建自定义列表项
+        // Create a custom list item
         QListWidgetItem* item = new QListWidgetItem(listWidget);
         PlayListItem* customItem = new PlayListItem;
-        customItem->updateInfo(title, thumbnail, duration, filePath); // 更新时传入视频路径
+        customItem->updateInfo(title, thumbnail, duration, filePath); // Incoming video path when updated
 
         item->setSizeHint(customItem->sizeHint());
         listWidget->setItemWidget(item, customItem);
     }
 }
 
-// 在路径中插入零宽度空格，强制换行
+// Insert a zero-width space into the path to force a newline
 QString ListPanel::insertZeroWidthSpace(const QString& text) {
     QString result;
     for (int i = 0; i < text.length(); ++i) {
         result.append(text[i]);
-        result.append("\u200B"); // 插入零宽度空格
+        result.append("\u200B");
     }
     return result;
 }
 
 void ListPanel::openFolder(const QString& folderPath) {
     if (folderPath.isEmpty() || !QDir(folderPath).exists()) {
-        QMessageBox::warning(this, "Invalid Path", "The specified folder does not exist.");
+        QMessageBox::warning(this,QObject::tr("Invalid Path"), QObject::tr("The specified folder does not exist."));
         return;
     }
 
-    // 加载视频
-    loadVideos(folderPath, ui->PlaylistListWidget);
+    // Load video
 
-    // 更新路径显示
+    // Update path display
     ui->CurrentPathLabel->setText(insertZeroWidthSpace(folderPath));
     ui->CurrentPathLabel->setToolTip(folderPath);
 
-    // 初始化或更新 DataManager
+    // Initializes or updates the DataManager
     if (dataManager) {
         delete dataManager;
     }
     dataManager = new DataManager(folderPath);
-
-    // 禁用按钮，因为还没有选择具体文件
     updateButtonStates(false);
+    loadVideos(folderPath, ui->PlaylistListWidget);
+
+    // Disable button because no specific file has been selected
+
 }
 
-// 批量设置点赞/收藏/新建评论的按钮状态
+// Set the status of the Like/favorite/New comment button in batches
 void ListPanel::updateButtonStates(bool enabled) {
     ui->FavouriteButton->setEnabled(enabled);
     ui->FavouriteOnButton->setEnabled(enabled);
@@ -108,13 +109,16 @@ void ListPanel::updateButtonStates(bool enabled) {
     controlPanel->SkipPrevButton->setEnabled(enabled);
     controlPanel->SkipNextButton->setEnabled(enabled);
     controlPanel->PauseButton->setEnabled(enabled);
-
     controlPanelVertical->SkipPrevButton->setEnabled(enabled);
     controlPanelVertical->SkipNextButton->setEnabled(enabled);
     controlPanelVertical->FavouriteButton->setEnabled(enabled);
     controlPanelVertical->FavouriteOnButton->setEnabled(enabled);
     controlPanelVertical->CollectButton->setEnabled(enabled);
     controlPanelVertical->CollectOnButton->setEnabled(enabled);
+    if(currentPlayMode ==  PlayMode::RandomLoop){
+        controlPanelVertical->SkipPrevButton->setEnabled(false);
+        controlPanel->SkipPrevButton->setEnabled(false);
+    }
 }
 
 ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, ControlPanel *controlPanel, ControlPanelVertical *controlPanelVertical) :
@@ -129,7 +133,7 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
 {
     ui->setupUi(this);
 
-    this->setMaximumWidth(400);
+    // this->setMaximumWidth(800);
     ui->FavouriteOnButton->hide();
     ui->CollectOnButton->hide();
     ui->CommentOnButton->hide();
@@ -137,22 +141,22 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
     ui->PlaylistButton->hide();
     controlPanelVertical->PlaylistButton2->hide();
 
-    // 设置Now Playing为空
+    // Set Now Playing to empty
     PlayListItem* blankListItem = new PlayListItem();
     ui->PlayingItemWidget->layout()->addWidget(blankListItem);
-    blankListItem->updateInfo("No video playing.", QPixmap(":/images/default_thumbnail.png"), 0, "No Path"); // 更新时传入视频路径
+    blankListItem->updateInfo(QObject::tr(""), QPixmap(":/images/default_thumbnail.png"), 0,QObject::tr("No Path")); // 更新时传入视频路径
 
-    // 点击打开文件夹按钮时
+    // Click the Open folder button
     QObject::connect(ui->OpenFolderButton, &QPushButton::clicked, [this]() {
-        QString folderPath = QFileDialog::getExistingDirectory(this, "Select Video Folder");
+        QString folderPath = QFileDialog::getExistingDirectory(this, QObject::tr("Select Video Folder"));
         openFolder(folderPath);
     });
 
-    // 选择列表项，播放对应的视频，并加载用户数据
+    // Select the list item, play the corresponding video, and load the user data
     QObject::connect(ui->PlaylistListWidget, &QListWidget::itemSelectionChanged, this, &ListPanel::playSelectedVideo);
 
 
-    // 点赞和收藏按钮
+    // The Like and favorite buttons
     QObject::connect(ui->FavouriteButton, &QPushButton::clicked, this, &ListPanel::onLikeClicked);
     QObject::connect(ui->FavouriteOnButton, &QPushButton::clicked, this, &ListPanel::onLikeClicked);
     QObject::connect(ui->CollectButton, &QPushButton::clicked, this, &ListPanel::onCollectClicked);
@@ -162,10 +166,10 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
     QObject::connect(controlPanelVertical->CollectButton, &QPushButton::clicked, this, &ListPanel::onCollectClicked);
     QObject::connect(controlPanelVertical->CollectOnButton, &QPushButton::clicked, this, &ListPanel::onCollectClicked);
 
-    // 新增评论
+    // Add comment
     QObject::connect(ui->NewCommentButton, &QPushButton::clicked, this, &ListPanel::onNewComment);
 
-    // 切换列表
+    // Toggle list
     QObject::connect(ui->CommentButton, &QPushButton::clicked, [=]() {
         ui->CommentButton->hide();
         controlPanelVertical->CommentButton->hide();
@@ -189,8 +193,11 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
         controlPanelVertical->PlaylistOnButton->hide();
         ui->CommentWidget->show();
         ui->PlaylistWidget->hide();
+        show();
+
     });
     QObject::connect(ui->PlaylistButton, &QPushButton::clicked, [=]() {
+
         ui->CommentButton->show();
         controlPanelVertical->CommentButton->show();
         ui->CommentOnButton->hide();
@@ -203,6 +210,8 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
         ui->PlaylistWidget->show();
     });
     QObject::connect(controlPanelVertical->PlaylistButton2, &QPushButton::clicked, [=]() {
+        show();
+
         ui->CommentButton->show();
         controlPanelVertical->CommentButton->show();
         ui->CommentOnButton->hide();
@@ -215,41 +224,45 @@ ListPanel::ListPanel(QWidget *parent, QHBoxLayout *top, ThePlayer *player, Contr
         ui->PlaylistWidget->show();
     });
 
-    // 关闭listPanel
+    // Close listPanel
     QObject::connect(ui->CloseButton, &QPushButton::clicked, [=]() {
-        controlPanel->PlaylistOpenButton->hide();
-        controlPanel->PlaylistButton->show();
+        if(controlPanel->isHidden()){
+            controlPanelVertical->show();
+        }else{
+            controlPanel->PlaylistOpenButton->hide();
+            controlPanel->PlaylistButton->show();
+        }
         controlPanelVertical->PlaylistOpenButton->hide();
         controlPanelVertical->PlaylistButton->show();
         this->hide();
     });
 
-    // 播放模式
+    // play mode
     currentPlayMode = PlayMode::ListLoop;
     QObject::connect(ui->PlayModeListLoopButton, &QPushButton::clicked, this, &ListPanel::onPlayModeButtonClicked);
     QObject::connect(ui->PlayModeSingleLoopButton, &QPushButton::clicked, this, &ListPanel::onPlayModeButtonClicked);
     QObject::connect(ui->PlayModeRandomLoopButton, &QPushButton::clicked, this, &ListPanel::onPlayModeButtonClicked);
     QObject::connect(ui->PlayModeNoLoopButton, &QPushButton::clicked, this, &ListPanel::onPlayModeButtonClicked);
-    // 连接播放器播放结束信号和listpanel的下一步行为
+
     connect(player, &ThePlayer::playbackFinished, this, &ListPanel::handlePlaybackFinished);
-    // 初始化播放模式ui
+
     updatePlayModeUI();
 
-    // 绑定control中的SkipNext和Prev按钮
+    // Bind the SkipNext and Prev buttons in control
     QObject::connect(controlPanel->SkipPrevButton, &QPushButton::clicked, this, &ListPanel::playPreviousVideo);
     QObject::connect(controlPanel->SkipNextButton, &QPushButton::clicked, this, &ListPanel::playNextVideo);
-    // 绑定controlveitical中的SkipNext和Prev按钮
+    // Bind the SkipNext and Prev buttons in the controlveitical
     QObject::connect(controlPanelVertical->SkipPrevButton, &QPushButton::clicked, this, &ListPanel::playPreviousVideo);
     QObject::connect(controlPanelVertical->SkipNextButton, &QPushButton::clicked, this, &ListPanel::playNextVideo);
 
 
-    // 初始化按钮为禁用状态
+    // The initialize button is disabled
     updateButtonStates(false);
 }
 
 void ListPanel::playSelectedVideo() {
     if (player) {
-        player->stopManually(); // 确保播放器进入手动停止模式
+        player->stopManually(); //Make sure the player enters manual stop mode
     }
 
     QListWidgetItem* item = ui->PlaylistListWidget->currentItem();
@@ -261,27 +274,25 @@ void ListPanel::playSelectedVideo() {
     currentVideoPath = customItem->getVideoPath();
     player->playVideo(currentVideoPath);
 
-    // 更新点赞和收藏状态
+    // Update likes and favorites status
     updateLikeButton(dataManager->getLikeStatus(currentVideoPath));
     updateCollectButton(dataManager->getCollectStatus(currentVideoPath));
 
-    // 刷新评论列表
+    // Refresh the comment list
     refreshComments();
 
-    // 启用按钮
+    // Enable button
     updateButtonStates(true);
 
-    // 更新“正在播放”区域
+    // Update the Playing area
     if (ui->PlayingItemWidget) {
-        // 清除 PlayingItemWidget 中的内容
+
         while (QLayoutItem* child = ui->PlayingItemWidget->layout()->takeAt(0)) {
             if (child->widget()) {
                 delete child->widget();
             }
             delete child;
         }
-
-        // 创建一个新的 Widget，复制 customItem 的信息
         PlayListItem* playingItem = new PlayListItem;
         playingItem->updateInfo(
             customItem->getTitle(),
@@ -289,8 +300,6 @@ void ListPanel::playSelectedVideo() {
             customItem->getDuration(),
             customItem->getVideoPath()
         );
-
-        // 将复制的自定义列表项添加到 PlayingItemWidget
         ui->PlayingItemWidget->layout()->addWidget(playingItem);
     }
 }
@@ -298,7 +307,7 @@ void ListPanel::playSelectedVideo() {
 void ListPanel::refreshComments() {
     ui->CommentListWidget->clear();
 
-    // 视频路径为空的时候就禁用按钮
+    // Disable the button when the video path is empty
     if (currentVideoPath.isEmpty()) {
         updateButtonStates(false);
         return;
@@ -322,16 +331,16 @@ void ListPanel::refreshComments() {
 }
 
 void ListPanel::onNewComment() {
-    // 记录当前播放状态并暂停
+    // Record the current playback status and pause
     bool wasPlaying = (player->state() == QMediaPlayer::PlayingState);
     player->pause();
 
-    // 创建评论对话框
+    // Create a comment dialog
     CommentDialog *dialog = new CommentDialog(this);
-    dialog->setDialogMode(false); // 新建模式
+    dialog->setDialogMode(false); // New mode
     dialog->setWindowModality(Qt::ApplicationModal);
 
-    // 显示对话框并处理结果
+    // Displays the dialog box and processes the results
     if (dialog->exec() == QDialog::Accepted) {
         QString username = dialog->getUsername();
         QString content = dialog->getCommentContent();
@@ -342,7 +351,7 @@ void ListPanel::onNewComment() {
         }
     }
 
-    // 恢复播放状态
+    // recovering playing state
     if (wasPlaying) {
         player->play();
     }
@@ -351,19 +360,18 @@ void ListPanel::onNewComment() {
 }
 
 
-// 处理编辑请求
+// Processing edit requests
 void ListPanel::onEditCommentRequested(int commentId, const QString &username, const QString &content) {
-    // 记录当前播放状态并暂停
     bool wasPlaying = (player->state() == QMediaPlayer::PlayingState);
     player->pause();
 
-    // 创建评论对话框
+    // Create a comment dialog
     CommentDialog *dialog = new CommentDialog(this);
-    dialog->setDialogMode(true); // 编辑模式
+    dialog->setDialogMode(true); // edit mode
     dialog->setCommentData(username, content);
     dialog->setWindowModality(Qt::ApplicationModal);
 
-    // 显示对话框并处理结果
+    // Displays the dialog box and processes the results
     if (dialog->exec() == QDialog::Accepted) {
         QString newUsername = dialog->getUsername();
         QString newContent = dialog->getCommentContent();
@@ -373,8 +381,6 @@ void ListPanel::onEditCommentRequested(int commentId, const QString &username, c
             refreshComments();
         }
     }
-
-    // 恢复播放状态
     if (wasPlaying) {
         player->play();
     }
@@ -413,9 +419,9 @@ void ListPanel::updateCollectButton(bool collected) {
     controlPanelVertical->CollectOnButton->setVisible(collected);
 }
 
-// 播放模式相关
+// play mode
 void ListPanel::onPlayModeButtonClicked() {
-    // 切换到下一种播放模式
+    // switch the next playmode
     switch (currentPlayMode) {
         case PlayMode::ListLoop:
             currentPlayMode = PlayMode::SingleLoop;
@@ -431,64 +437,63 @@ void ListPanel::onPlayModeButtonClicked() {
             break;
     }
 
-    // 更新界面
+    // update
     updatePlayModeUI();
 }
 
 void ListPanel::updatePlayModeUI() {
-    // 更新按钮状态
+    // update button state
     ui->PlayModeListLoopButton->setVisible(currentPlayMode == PlayMode::ListLoop);
     ui->PlayModeSingleLoopButton->setVisible(currentPlayMode == PlayMode::SingleLoop);
     ui->PlayModeRandomLoopButton->setVisible(currentPlayMode == PlayMode::RandomLoop);
     ui->PlayModeNoLoopButton->setVisible(currentPlayMode == PlayMode::NoLoop);
 
-    // 随机模式下禁用上一个按钮
+    // Disable the previous button in random mode
     controlPanel->SkipPrevButton->setDisabled(currentPlayMode == PlayMode::RandomLoop);
     controlPanelVertical->SkipPrevButton->setDisabled(currentPlayMode == PlayMode::RandomLoop);
 
-    // 更新播放模式标签
+    // Updated the playback mode TAB
     switch (currentPlayMode) {
         case PlayMode::ListLoop:
-            ui->PlayModeLabel->setText("Play Mode: List Loop");
+            ui->PlayModeLabel->setText(QObject::tr("Play Mode: List Loop"));
             break;
         case PlayMode::SingleLoop:
-            ui->PlayModeLabel->setText("Play Mode: Single Loop");
+            ui->PlayModeLabel->setText(QObject::tr("Play Mode: Single Loop"));
             break;
         case PlayMode::RandomLoop:
-            ui->PlayModeLabel->setText("Play Mode: Random Loop");
+            ui->PlayModeLabel->setText(QObject::tr("Play Mode: Random Loop"));
             break;
         case PlayMode::NoLoop:
-            ui->PlayModeLabel->setText("Play Mode: No Loop");
+            ui->PlayModeLabel->setText(QObject::tr("Play Mode: No Loop"));
             break;
     }
 }
 
 void ListPanel::handlePlaybackFinished() {
     if (currentPlayMode == PlayMode::NoLoop) {
-        // 播放完成后不进行任何操作
+        // No operation is performed after the playback is complete
         return;
     }
 
     int currentIndex = ui->PlaylistListWidget->currentRow();
     int totalItems = ui->PlaylistListWidget->count();
 
-    // 根据播放模式选择下一个播放的项目
+    // Select the next item to play according to the playback mode
     if (currentPlayMode == PlayMode::ListLoop) {
         currentIndex = (currentIndex + 1) % totalItems;
     } else if (currentPlayMode == PlayMode::SingleLoop) {
-        // 保持 currentIndex 不变
     } else if (currentPlayMode == PlayMode::RandomLoop) {
         int newIndex;
         do {
-            newIndex = qrand() % totalItems; // 随机选择下一个
-        } while (newIndex == currentIndex && totalItems > 1); // 确保新索引不同于当前索引
+            newIndex = qrand() % totalItems; // randomly choose
+        } while (newIndex == currentIndex && totalItems > 1); // Make sure the new index is different from the current index
         currentIndex = newIndex;
     }
 
-    // 设置当前选择项
+    // Sets the current selection
     ui->PlaylistListWidget->setCurrentRow(currentIndex);
 
-    // 调用封装好的播放逻辑
+    // Call wrapped playback logic
      playSelectedVideo();
 }
 
@@ -499,7 +504,7 @@ void ListPanel::playNextVideo() {
     if (currentPlayMode == PlayMode::RandomLoop) {
         int nextIndex = qrand() % totalItems;
         while (nextIndex == currentIndex) {
-            nextIndex = qrand() % totalItems; // 确保随机到不同的视频
+            nextIndex = qrand() % totalItems; // Make sure to randomize to different videos
         }
         currentIndex = nextIndex;
     } else {
@@ -512,7 +517,7 @@ void ListPanel::playNextVideo() {
 
 void ListPanel::playPreviousVideo() {
     if (currentPlayMode == PlayMode::RandomLoop) {
-        return; // 随机模式下禁用“上一个”按钮
+        return; // Disable the Previous button in random mode
     }
 
     int currentIndex = ui->PlaylistListWidget->currentRow();

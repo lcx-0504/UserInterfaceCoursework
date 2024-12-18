@@ -12,9 +12,9 @@ public:
     {
     }
 protected:
-    void mousePressEvent(QMouseEvent *ev);//重写QSlider的mousePressEvent事件,不然不会实现指哪打哪
+    void mousePressEvent(QMouseEvent *ev);
 signals:
-    void costomSliderClicked();//自定义的鼠标单击信号，用于捕获并处理
+    void costomSliderClicked();// Custom mouse click signals for capture and processing
 };
 
 #endif // CUSTOMSLIDER_H

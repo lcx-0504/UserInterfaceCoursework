@@ -20,16 +20,17 @@ private:
 
 
 private slots:
-    // 控制进度条
+    // Control progress bar
     void onPlayerDurationChanged(qint64 duration);
     void onPlayerPositionChanged(qint64 position);
     void onSliderMoved(int value);
     void sliderClicked();
 
-    // 显示时间
+    // display time
     void updateTimeLabel(qint64 position);
     QString formatTime(qint64 timeInMilliseconds);
-
+public slots:
+    void handleSignal(int value);
 };
 
 #endif // CONTROL_PANEL_H
